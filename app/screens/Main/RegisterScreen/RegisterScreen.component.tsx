@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Container, Content, Form, Text } from 'native-base';
 import styles from './RegisterScreen.style';
-import { FormInput } from '../../components/molecules';
+import { FormInput } from '../../../components/molecules';
+import { Logo } from '../../../components/atoms';
 import { Alert } from 'react-native';
-import { Logo } from '../../components/atoms';
 
 export interface IRegisterScreenProps {
   navigation: any;

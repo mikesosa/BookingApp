@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Container, Content, Form, Text } from 'native-base';
-import { FormInput } from '../../components/molecules';
-import { Logo } from '../../components/atoms';
+import { FormInput } from '../../../components/molecules';
+import { Logo } from '../../../components/atoms';
 import styles from './LoginScreen.style';
 
 export interface ILoginScreenProps {
@@ -18,7 +18,7 @@ export function LoginScreen({ navigation }: ILoginScreenProps) {
           <FormInput label="Contraseña" last={true} secureTextEntry={true} />
         </Form>
         <Button danger block style={styles.button}>
-          <Text>Iniciar sesion</Text>
+          <Text>Iniciar sesión</Text>
         </Button>
 
         <Button

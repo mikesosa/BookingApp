@@ -1,11 +1,10 @@
 import React from 'react';
+import { FooterTabs } from '../../../components/organisms';
 import {
   Container,
   Header,
   Title,
   Content,
-  Footer,
-  FooterTab,
   Button,
   Left,
   Right,
@@ -16,6 +15,7 @@ import {
 
 export interface IHomeScreenProps {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function HomeScreen(props: IHomeScreenProps) {
   return (
     <Container>
@@ -33,13 +33,7 @@ export function HomeScreen(props: IHomeScreenProps) {
       <Content>
         <Text>Haz click en el boton firmar</Text>
       </Content>
-      <Footer>
-        <FooterTab>
-          <Button danger block>
-            <Text>Firmar</Text>
-          </Button>
-        </FooterTab>
-      </Footer>
+      <FooterTabs activeTab="profile" />
     </Container>
   );
 }
