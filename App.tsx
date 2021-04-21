@@ -4,13 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleProvider } from 'native-base';
 import getTheme from './native-base-theme/components';
-import customTheme from './native-base-theme/variables/customTheme';
+import material from './native-base-theme/variables/material';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <StyleProvider style={getTheme(customTheme as any)}>
+    <StyleProvider style={getTheme(material as any)}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen options={{ headerShown: false }} name="Login" component={LoginScreen} />
