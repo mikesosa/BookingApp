@@ -10,7 +10,7 @@ In order for everything to work as expected please do this changes in the follow
 ```sh
 // Change on node_modules/react-native-calendars/src/calendar/day/period/style.js on line 6
 
-const FILLER_HEIGHT = 90;
+const FILLER_HEIGHT = 80;
 
 // Add in line 20
 justifyContent: 'center'

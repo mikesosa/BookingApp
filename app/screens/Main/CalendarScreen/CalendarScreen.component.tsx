@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CalendarOnlyScreen, CalendarManageScreen } from '../../Secondary';
+import { CalendarOnlyScreen, CalendarManageScreen, CalendarAgendaScreen } from '../../Secondary';
 
 const CalendarStack = createStackNavigator();
 
@@ -13,9 +13,14 @@ export function CalendarScreen() {
         component={CalendarOnlyScreen}
       />
       <CalendarStack.Screen
-        options={{ headerShown: false }}
+        options={{ headerShown: true, title: 'Disponibilidad' }}
         name="CalendarManage"
         component={CalendarManageScreen}
+      />
+      <CalendarStack.Screen
+        options={{ headerShown: true, title: 'Agenda' }}
+        name="CalendarAgenda"
+        component={CalendarAgendaScreen}
       />
     </CalendarStack.Navigator>
   );

@@ -46,25 +46,21 @@ export interface ICalendarOnlyScreenProps {
 
 export function CalendarOnlyScreen({ navigation }: ICalendarOnlyScreenProps) {
   const markedDates = {
-    '2021-04-15': { marked: true, dotColor: '#50cebb' },
-    '2021-04-16': { marked: true, dotColor: '#50cebb' },
-    '2021-04-21': { startingDay: true, color: '#50cebb', textColor: 'white' },
-    '2021-04-22': { color: '#70d7c7', textColor: 'white' },
-    '2021-04-23': { color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white' },
-    '2021-04-24': { color: '#70d7c7', textColor: 'white' },
-    '2021-04-25': { endingDay: true, color: '#50cebb', textColor: 'white' },
+    '2021-04-20': { textColor: 'lightblue' },
+    '2021-04-22': { startingDay: true, color: 'lightblue' },
+    '2021-04-04': { startingDay: true, color: 'lightblue', endingDay: true },
+    '2021-04-23': { endingDay: true, color: 'lightblue' },
   };
-  console.log('vaaa');
+
   return (
     <MainLayout headerTitle="Calendar">
       <Calendar
-        onDayPress={(day) => {
-          console.log('selected day', day);
+        // @ts-ignore: Unreachable code error
+        dayHeight={80}
+        onDayPress={() => {
+          navigation.navigate('CalendarAgenda');
         }}
-        onDayLongPress={(day) => {
-          console.log('selected day', day);
-        }}
-        markingType="period"
+        markingType={'period' as any}
         markedDates={markedDates as any}
         enableSwipeMonths={true}
       />
@@ -74,6 +70,7 @@ export function CalendarOnlyScreen({ navigation }: ICalendarOnlyScreenProps) {
           direction="up"
           containerStyle={{}}
           position="bottomRight"
+          style={{ backgroundColor: 'tomato' }}
           onPress={() => navigation.navigate('CalendarManage')}
         >
           <Icon type="FontAwesome" name="plus" />

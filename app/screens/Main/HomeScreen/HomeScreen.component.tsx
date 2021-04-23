@@ -1,8 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { CalendarScreen } from '../CalendarScreen/CalendarScreen.component';
-import { RegisterScreen } from '..';
 import { Icon } from 'native-base';
+import {
+  CalendarScreen,
+  ProfileScreen,
+  NotificationsScreen,
+  EducationScreen,
+  StartTestScreen,
+} from '../../';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,12 +16,19 @@ export function HomeScreen() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
-          let icon: any;
+          let icon: any = { type: '', name: '' };
           if (route.name === 'Calendar') {
             icon.type = focused ? 'FontAwesome5' : 'FontAwesome';
             icon.name = focused ? 'calendar-week' : 'calendar-o';
-          } else if (route.name === 'Register') {
-            icon.name = 'person';
+          } else if (route.name === 'Education') {
+            icon.type = 'FontAwesome';
+            icon.name = 'graduation-cap';
+          } else if (route.name === 'Notifications') {
+            icon.name = focused ? 'md-notifications' : 'md-notifications-outline';
+          } else if (route.name === 'Profile') {
+            icon.name = focused ? 'person' : 'person-outline';
+          } else {
+            icon.name = focused ? 'play-circle' : 'play-circle-outline';
           }
 
           return (
@@ -29,8 +41,15 @@ export function HomeScreen() {
         inactiveTintColor: 'gray',
       }}
     >
-      <Tab.Screen name="Calendar" component={CalendarScreen} />
-      <Tab.Screen name="Register" options={{ title: 'Registro' }} component={RegisterScreen} />
+      <Tab.Screen name="Calendar" options={{ title: 'Calendario' }} component={CalendarScreen} />
+      <Tab.Screen name="Education" options={{ title: 'Escuela' }} component={EducationScreen} />
+      <Tab.Screen name="Test" options={{ title: 'Prueba' }} component={StartTestScreen} />
+      <Tab.Screen
+        name="Notifications"
+        options={{ title: 'Notificaciones' }}
+        component={NotificationsScreen}
+      />
+      <Tab.Screen name="Profile" options={{ title: 'Perfil' }} component={ProfileScreen} />
     </Tab.Navigator>
   );
 }
