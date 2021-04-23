@@ -10,8 +10,8 @@ export function FooterTabs({ activeTab }: IFooterTabsProps) {
   return (
     <Footer>
       <FooterTab>
-        <Button vertical active={activeTab === 'agenda'}>
-          <Icon type="FontAwesome" name="calendar-o" />
+        <Button vertical active={activeTab === 'calendar'}>
+          <Icon type="FontAwesome5" name="calendar-week" />
           <Text>Agenda</Text>
         </Button>
         <Button vertical active={activeTab === 'school'}>
