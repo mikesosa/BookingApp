@@ -13,7 +13,7 @@ export function CalendarScreen() {
         component={CalendarOnlyScreen}
       />
       <CalendarStack.Screen
-        options={{ headerShown: true, title: 'Disponibilidad' }}
+        options={{ headerShown: true, title: 'Administar disponibilidad' }}
         name="CalendarManage"
         component={CalendarManageScreen}
       />
