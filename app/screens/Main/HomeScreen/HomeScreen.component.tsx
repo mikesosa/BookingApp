@@ -32,7 +32,11 @@ export function HomeScreen() {
           }
 
           return (
-            <Icon type={icon.type} name={icon.name} style={{ fontSize: size, color: color }} />
+            <Icon
+              type={icon.type || undefined}
+              name={icon.name}
+              style={{ fontSize: size, color: color }}
+            />
           );
         },
       })}

@@ -56,7 +56,7 @@ export function CalendarOnlyScreen({ navigation }: ICalendarOnlyScreenProps) {
     <MainLayout headerTitle="Calendar">
       <Calendar
         // @ts-ignore: Unreachable code error
-        dayHeight={80}
+        dayHeight={70}
         onDayPress={() => {
           navigation.navigate('CalendarAgenda');
         }}
