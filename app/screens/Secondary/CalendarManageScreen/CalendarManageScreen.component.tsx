@@ -36,6 +36,31 @@ export function CalendarManageScreen() {
   const [endingDay, setEndingDay] = useState(null as any);
   const [markedDates, setMarkedDates] = useState<IMarkedDates>();
 
+  //Find a range of dates by rangeId
+  const findRangeById = (rangeId?: string) => {
+    let selectedRange = [];
+    for (let key in ranges) {
+      if (ranges[key].rangeId === rangeId) {
+        selectedRange.push({ [key]: ranges[key] });
+      }
+    }
+    return Object.assign({}, ...selectedRange);
+  };
+
+  const handleEditRange = (rangeId?: string) => {
+    let selectedRange = findRangeById(rangeId);
+    showTimeOptions(selectedRange, true); // Send by pass in true
+  };
+
+  const handleDeleteRange = (rangeId?: string) => {
+    let selectedRange = findRangeById(rangeId);
+    let copyRanges = { ...ranges };
+    for (let key in selectedRange) {
+      delete copyRanges[key];
+    }
+    setRanges({ ...copyRanges });
+  };
+
   const handlePressDay = (day: any) => {
     // Fist check if this is a preselected date
     if (day.dateString in ranges) {
@@ -43,27 +68,18 @@ export function CalendarManageScreen() {
       Alert.alert('Atenciòn', '¿Deseas editar este rango de fechas?', [
         {
           text: 'Editar horario',
-          onPress: () => {
-            //Find startDate, dates in between, and endDate
-            for (let key in ranges) {
-              if (ranges[key].rangeId === rangeId) {
-                console.log('found', key);
-              }
-            }
-            // markedDates
-            // showTimeOptions()
-          },
+          onPress: () => handleEditRange(rangeId),
         },
         {
           text: 'Volver',
-          onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        { text: 'Eliminar', onPress: () => console.log('OK Pressed') },
+        { text: 'Eliminar', onPress: () => handleDeleteRange(rangeId) },
       ]);
     } else {
       if (startingDay && endingDay) {
         clearState();
+        setMarkedDates(ranges); // Keep the ranges already selected
       } else if (startingDay && startingDay.dateString <= day.dateString) {
         setEndingDay(day);
       } else {
@@ -75,32 +91,31 @@ export function CalendarManageScreen() {
   const clearState = () => {
     setEndingDay(null);
     setStartingDay(null);
-    setMarkedDates(ranges);
   };
 
-  const changeRangeColor = (color: string) => {
-    const copyMarkedDates = { ...markedDates };
+  const changeRangeColor = (color: string, markedRange: any, byPass?: boolean) => {
     clearState();
-    for (let key in copyMarkedDates) {
-      if (!copyMarkedDates[key].saved) {
-        copyMarkedDates[key].color = color;
-        copyMarkedDates[key].saved = true;
+    setMarkedDates(undefined);
+    for (let key in markedRange) {
+      // By pass if its a saved date
+      if (!markedRange[key].saved || byPass) {
+        markedRange[key].color = color;
+        markedRange[key].saved = true;
       }
     }
-    console.log(copyMarkedDates);
-    setRanges({ ...ranges, ...copyMarkedDates });
+    setRanges({ ...ranges, ...markedRange });
   };
 
-  const handleSelectedTimeRange = (index: number) => {
+  const handleSelectedTimeRange = (index: number, markedRange: any, byPass?: boolean) => {
     switch (index) {
       case 0:
-        changeRangeColor(AM_DAY_COLOR);
+        changeRangeColor(AM_DAY_COLOR, markedRange, byPass);
         break;
       case 1:
-        changeRangeColor(PM_DAY_COLOR);
+        changeRangeColor(PM_DAY_COLOR, markedRange, byPass);
         break;
       case 2:
-        changeRangeColor(FULL_DAY_COLOR);
+        changeRangeColor(FULL_DAY_COLOR, markedRange, byPass);
         break;
       default:
         clearState();
@@ -109,24 +124,24 @@ export function CalendarManageScreen() {
   };
 
   useEffect(() => {
+    // Here we set the final payload to be painted or pushed to the cloud
     setMarkedDates(ranges);
   }, [ranges]);
 
-  const showTimeOptions = () => {
+  const showTimeOptions = (markedRange: any, byPass?: boolean) => {
     ActionSheet.show(
       {
         options: TIME_RANGES,
         cancelButtonIndex: 3,
         title: '¿En que horario estaras disponible?',
       },
-      (buttonIndex) => handleSelectedTimeRange(buttonIndex),
+      (buttonIndex) => handleSelectedTimeRange(buttonIndex, markedRange, byPass),
     );
   };
 
   useEffect(() => {
     if (startingDay) {
       const dates = {
-        // '2021-04-23': { color: '#70d7c7', textColor: 'white', marked: true, dotColor: 'white' },
         [startingDay.dateString]: { startingDay: true, color: EDGE_DATES_COLOR },
       };
       setMarkedDates({ ...dates, ...ranges });
@@ -172,7 +187,11 @@ export function CalendarManageScreen() {
         enableSwipeMonths={true}
       />
 
-      <Button block onPress={() => showTimeOptions()}>
+      <Button
+        block
+        disabled={endingDay ? false : true}
+        onPress={() => showTimeOptions(markedDates)}
+      >
         <Text>Primary</Text>
       </Button>
     </MainLayout>
