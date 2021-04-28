@@ -70,7 +70,7 @@ export function CalendarOnlyScreen({ navigation }: ICalendarOnlyScreenProps) {
           direction="up"
           containerStyle={{}}
           position="bottomRight"
-          style={{ backgroundColor: 'tomato' }}
+          style={styles.button}
           onPress={() => navigation.navigate('CalendarManage')}
         >
           <Icon type="FontAwesome" name="plus" />

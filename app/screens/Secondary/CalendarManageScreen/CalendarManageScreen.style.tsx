@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  fabWrapper: {
-    flex: 1,
-    marginTop: 50,
-  },
   button: {
-    backgroundColor: 'tomato',
+    marginTop: 20,
+    margin: 40,
+  },
+  icon: {
+    fontSize: 20,
   },
 });

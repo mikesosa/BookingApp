@@ -2,21 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { MainLayout } from '../../../components/templates';
 import { Calendar } from 'react-native-calendars';
 import { enumerateDaysBetweenDates } from '../../../utils/datesInBetween';
-import { ActionSheet, Button, Text } from 'native-base';
+import { ActionSheet, Body, Button, Icon, Left, ListItem, Text } from 'native-base';
 import { Alert } from 'react-native';
-
-const EDGE_DATES_COLOR = '#50cebb';
-const BETWEEN_DATES_COLOR = '#70d7c7';
-const AM_DAY_COLOR = 'gold';
-const PM_DAY_COLOR = 'goldenrod';
-const FULL_DAY_COLOR = 'chartreuse';
-
-const TIME_RANGES = [
-  { text: 'En la mañana (AM)', icon: 'partly-sunny-outline', iconColor: 'tomato' },
-  { text: 'En la tarde (PM)', icon: 'md-cloudy-night-outline', iconColor: 'tomato' },
-  { text: 'Todo el dia (24h)', icon: 'md-cloudy-sharp', iconColor: 'tomato' },
-  { text: 'Cancelar', icon: 'close', iconColor: 'red' },
-];
+import styles from './CalendarManageScreen.style';
+import {
+  AM_DAY_COLOR,
+  BETWEEN_DATES_COLOR,
+  EDGE_DATES_COLOR,
+  FULL_DAY_COLOR,
+  PM_DAY_COLOR,
+  TIME_RANGES,
+} from '../../../utils/constants';
 
 interface ICalendarDate {
   color: string;
@@ -176,6 +172,26 @@ export function CalendarManageScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endingDay]);
 
+  const createConventions = () =>
+    TIME_RANGES.map((time, idx) => {
+      if (time.text !== 'Cancelar') {
+        return (
+          <ListItem icon key={idx}>
+            <Left>
+              <Icon
+                type="Ionicons"
+                name={time.icon}
+                style={{ color: time.iconColor, ...styles.icon }}
+              />
+            </Left>
+            <Body>
+              <Text>{time.text}</Text>
+            </Body>
+          </ListItem>
+        );
+      }
+    });
+
   return (
     <MainLayout headerTitle="Calendar">
       <Calendar
@@ -188,12 +204,14 @@ export function CalendarManageScreen() {
       />
 
       <Button
+        style={styles.button}
         block
         disabled={endingDay ? false : true}
         onPress={() => showTimeOptions(markedDates)}
       >
-        <Text>Primary</Text>
+        <Text>Marcar</Text>
       </Button>
+      {createConventions()}
     </MainLayout>
   );
 }
