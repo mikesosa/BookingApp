@@ -5,6 +5,7 @@ import { enumerateDaysBetweenDates } from '../../../utils/datesInBetween';
 import { ActionSheet, Body, Button, Icon, Left, ListItem, Text } from 'native-base';
 import { Alert } from 'react-native';
 import styles from './CalendarManageScreen.style';
+import { setCalendarAvailableDates } from '../../../store/slices/calendar';
 import {
   AM_DAY_COLOR,
   BETWEEN_DATES_COLOR,
@@ -13,6 +14,8 @@ import {
   PM_DAY_COLOR,
   TIME_RANGES,
 } from '../../../utils/constants';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store/store';
 
 interface ICalendarDate {
   color: string;
@@ -27,6 +30,7 @@ interface IMarkedDates {
 }
 
 export function CalendarManageScreen() {
+  const dispatch: AppDispatch = useDispatch();
   const [ranges, setRanges] = useState<IMarkedDates>({});
   const [startingDay, setStartingDay] = useState(null as any);
   const [endingDay, setEndingDay] = useState(null as any);
@@ -122,7 +126,8 @@ export function CalendarManageScreen() {
   useEffect(() => {
     // Here we set the final payload to be painted or pushed to the cloud
     setMarkedDates(ranges);
-  }, [ranges]);
+    dispatch(setCalendarAvailableDates(ranges));
+  }, [dispatch, ranges]);
 
   const showTimeOptions = (markedRange: any, byPass?: boolean) => {
     ActionSheet.show(

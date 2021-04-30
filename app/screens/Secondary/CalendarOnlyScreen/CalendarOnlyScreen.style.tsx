@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   fabWrapper: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 60,
   },
   button: {
     backgroundColor: 'tomato',

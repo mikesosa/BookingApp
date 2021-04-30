@@ -1,56 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Icon, Fab } from 'native-base';
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+// import moment from 'moment';
+import { EDGE_DATES_COLOR } from '../../../utils/constants';
+import { Calendar } from 'react-native-calendars';
 import styles from './CalendarOnlyScreen.style';
 import { MainLayout } from '../../../components/templates';
-
-LocaleConfig.locales.es = {
-  monthNames: [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ],
-  monthNamesShort: [
-    'Ene',
-    'Feb',
-    'Mar',
-    'Abr',
-    'May',
-    'Jun',
-    'Jul',
-    'Ago',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dic',
-  ],
-  dayNames: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sàbado'],
-  dayNamesShort: ['Dom.', 'Lun.', 'Mar.', 'Mie.', 'Jue.', 'Vie.', 'Sab.'],
-  today: 'Hoy',
-};
-LocaleConfig.defaultLocale = 'es';
+import { useSelector } from 'react-redux';
+import { calendarSelector } from '../../../store/slices/calendar';
+import { useEffect } from 'react';
+import moment from 'moment';
 
 export interface ICalendarOnlyScreenProps {
   navigation: any;
   screenName: string;
 }
 
+const eventDates = ['2021-04-22', '2021-04-05', '2021-04-12'];
+
 export function CalendarOnlyScreen({ navigation }: ICalendarOnlyScreenProps) {
-  const markedDates = {
-    '2021-04-20': { textColor: 'lightblue' },
-    '2021-04-22': { startingDay: true, color: 'lightblue' },
-    '2021-04-04': { startingDay: true, color: 'lightblue', endingDay: true },
-    '2021-04-23': { endingDay: true, color: 'lightblue' },
+  const { availableDates } = useSelector(calendarSelector);
+  const [events, setEvents] = useState({});
+
+  const mergeEvents = () => {
+    const today = moment(new Date()).format('yyyy-MM-DD');
+    let tempCopy = { ...availableDates };
+    eventDates.forEach((date) => {
+      tempCopy[`${date}`] = {
+        ...tempCopy[`${date}`],
+        selected: true,
+        marked: true,
+        textColor: 'white',
+        dotColor: 'white',
+      };
+    });
+    tempCopy[`${today}`] = {
+      ...tempCopy[`${today}`],
+      textColor: EDGE_DATES_COLOR,
+    };
+    setEvents(tempCopy);
   };
+
+  useEffect(() => {
+    mergeEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [availableDates]);
 
   return (
     <MainLayout headerTitle="Calendar">
@@ -61,7 +54,7 @@ export function CalendarOnlyScreen({ navigation }: ICalendarOnlyScreenProps) {
           navigation.navigate('CalendarAgenda');
         }}
         markingType={'period' as any}
-        markedDates={markedDates as any}
+        markedDates={events as any}
         enableSwipeMonths={true}
       />
       <View style={styles.fabWrapper}>
